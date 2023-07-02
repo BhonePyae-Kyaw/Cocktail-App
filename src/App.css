@@ -20,12 +20,25 @@
 }
 .drinkListContainer{
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: 20% 20% 20% 20%;
+  justify-content: center;
 }
 .drinkListImg{
   width: 200px;
 }
+.alphabetSearchContainer{
+  text-align: center;
+}
 .alphabetSearchContainer span{
+  cursor: pointer;
+}
+.pagination{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+.pagination button{
   cursor: pointer;
 }
 

@@ -19,9 +19,10 @@ export default function TryMeDrink({drink, getDrinks}) {
                     {dr.strMeasure2}  {dr.strIngredient2}, 
                     {dr.strMeasure3} {dr.strIngredient3}
                   </p>
+                  <p>Category: {dr.strCategory}</p>
                   <p>
-                    Instructions: 
-                    {dr.strInstructions}
+                    Alcoholic or non: 
+                    {dr.strAlcoholic}
                   </p>
                 </div>
               </div>

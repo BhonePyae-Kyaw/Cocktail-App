@@ -1,14 +1,19 @@
 import './App.css';
 import axios from 'axios'
-import { useCallback, useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 import TryMeDrink from './components/TryMeDrink';
 import DrinkList from './components/DrinkList';
 import AlphabetSearch from './components/AlphabetSearch';
+import Pagination from './components/Pagination';
 
 function App() {
   const [drink, setdrink] = useState();
   const [drinkList, setDrinkList] = useState();
   const [params, setParams] = useState('a')
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(4);
+
+  
 
   const getDrinks = async() => {
     try {
@@ -24,33 +29,38 @@ function App() {
     axios.get(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${params}`)
     .then( function (response) {
       setDrinkList(response.data.drinks)
-      console.log(params)
+      console.log(response.data.drinks)
     })
     .catch(function (error) {
       console.log(error)
     })
   }
-
-  const setNewParams = (char) => {
-    setParams(char);
-    getDrinksByName();
-  };
-
   useEffect(() => {
     getDrinksByName();
+    setCurrentPage(1)
   }, [params])
   
   useEffect(() => {
     getDrinks();
   }, [])
 
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = drinkList?.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = pageNumber => setCurrentPage(pageNumber);
+
   return (
     <div className="App">
       <h1>Welcome to the Cocktail Master!</h1>
       <TryMeDrink drink={drink} getDrinks ={getDrinks} />
-      <AlphabetSearch setNewParams={setNewParams} />
-      <DrinkList drinkList={drinkList} />
-    
+      <AlphabetSearch setParams={setParams} />
+      <DrinkList drinkList={currentPosts} />
+      <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={drinkList?.length}
+        paginate={paginate}
+      />
 
       
     </div>
